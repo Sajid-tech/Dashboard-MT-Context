@@ -70,7 +70,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       <div className="m-4">
         <ul className="mb-4 flex flex-col gap-1">
           <li>
-            <NavLink to="/">
+            <NavLink to="/home">
               {({ isActive }) => (
                 <Button
                   variant={isActive ? "gradient" : "text"}
