@@ -21,6 +21,8 @@ const App = () => {
           path="/participant"
           element={<ProtectedRoute element={<Participant />} />}
         />
+        {/* Catch-all route that redirects to the login page */}
+        {/* <Route path="*" element={<Navigate to="/" />} /> */}
       </Routes>
     </>
   );
