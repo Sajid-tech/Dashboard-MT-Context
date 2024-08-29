@@ -7,7 +7,7 @@ const ProtectedRoute = ({ element }) => {
   const { isPanelUp } = useContext(ContextPanel);
 
   if (!token || !isPanelUp?.success) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   return element;

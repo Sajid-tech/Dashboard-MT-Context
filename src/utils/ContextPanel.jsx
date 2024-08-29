@@ -37,19 +37,19 @@ const AppProvider = ({ children }) => {
     } else if (isPanelUp?.success) {
       if (token) {
         if (
-          currentPath === "/" ||
+          currentPath === "/home" ||
           currentPath === "/participant" ||
           currentPath === "/registration"
         ) {
           navigate(currentPath);
         } else {
-          navigate("/");
+          navigate("/home");
         }
       } else {
-        if (currentPath === "/login") {
-          navigate("/login");
+        if (currentPath === "/") {
+          navigate("/");
         } else {
-          navigate("/login"); // Redirect to login if no token is present
+          navigate("/"); // Redirect to login if no token is present
         }
       }
     }
