@@ -18,7 +18,6 @@ const SignIn = () => {
       navigate("/maintenance");
       return;
     }
-
     setLoading(true);
 
     //create a formData object and append state values
@@ -48,6 +47,7 @@ const SignIn = () => {
 
     setLoading(false);
   };
+
   return (
     <section className="flex flex-col lg:flex-row min-h-screen ">
       <div className="flex-1 lg:w-3/5 m-4 lg:m-12  px-4 lg:px-8">
