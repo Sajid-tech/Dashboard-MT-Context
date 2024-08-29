@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState } from "react";
 import Footer from "../components/Footer";
 import DashboardNavbar from "../components/DashboardNavbar";

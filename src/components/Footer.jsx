@@ -3,13 +3,13 @@ import { HeartIcon } from "@heroicons/react/24/solid";
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const brandName = "Sajid";
-  const brandLink = "https://www.github.com/sajid-tech";
+  const brandName = "AG Solutions";
+  const brandLink = "https://www.ag-solutions.in";
   const routes = [
-    { name: "Sajid", path: "https://www.github.com/sajid-tech" },
-    { name: "About Us", path: "https://www.creative-tim.com/presentation" },
-    { name: "Blog", path: "https://www.creative-tim.com/blog" },
-    { name: "License", path: "https://www.creative-tim.com/license" },
+    { name: "AG Solutions", path: "https://www.ag-solutions.in" },
+    { name: "About Us", path: "https://ag-solutions.in/about.php" },
+    { name: "Portfolio", path: "https://ag-solutions.in/portfolio.php" },
+    { name: "Contact", path: "https://ag-solutions.in/contact.php" },
   ];
 
   return (

@@ -4,222 +4,186 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Avatar,
-  Chip,
-  Tooltip,
-  Progress,
 } from "@material-tailwind/react";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { authorsTableData, projectsTableData } from "../../data";
+
+import { useContext, useEffect, useState } from "react";
+import { ContextPanel } from "../../utils/ContextPanel";
+import BASE_URL from "../../base/BaseUrl";
+import axios from "axios";
+import { AiOutlineSearch } from "react-icons/ai";
+import { FaPrint } from "react-icons/fa";
 const Participant = () => {
+  const [participant, setParticipant] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { isPanelUp } = useContext(ContextPanel);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const itemsPerPage = 6;
+
+  useEffect(() => {
+    const fetchParticipants = async () => {
+      try {
+        if (!isPanelUp) {
+          naviagte("/maintenance");
+          return;
+        }
+
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${BASE_URL}/api/panel-fetch-idcard`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // Check if the response has the expected structure
+        if (response.data && response.data.registeridcard) {
+          setParticipant(response.data.registeridcard);
+          // console.log("participantsdata", response.data.registeridcard);
+        } else {
+          console.error("Unexpected response structure:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching participants:", error);
+      }
+    };
+    fetchParticipants();
+    setLoading(false);
+  }, []);
+
+  // Filter participants based on search query
+  const searchParticipants = participant.filter((item) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      item.id_name_of_firm?.toLowerCase().includes(query) ||
+      item.id_card_brand_name?.toLowerCase().includes(query) ||
+      item.idcardsub_rep_name?.toLowerCase().includes(query) ||
+      item.idcardsub_rep_mobile?.toLowerCase().includes(query)
+    );
+  });
+
+  // Calculate total number of pages
+  const totalPages = Math.ceil(searchParticipants.length / itemsPerPage);
+
+  // Get current items
+  const currentItems = searchParticipants.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <Layout>
       <div className="mt-12 mb-8 flex flex-col gap-12">
         <Card>
-          <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
-            <Typography variant="h6" color="white">
-              Authors Table
+          <CardHeader variant="gradient" color="white" className="mb-8 p-6">
+            <Typography variant="h6" color="black">
+              Participants List
             </Typography>
           </CardHeader>
           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-            <table className="w-full min-w-[640px] table-auto">
-              <thead>
-                <tr>
-                  {["author", "function", "status", "employed", ""].map(
-                    (el) => (
-                      <th
-                        key={el}
-                        className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                      >
-                        <Typography
-                          variant="small"
-                          className="text-[11px] font-bold uppercase text-blue-gray-400"
-                        >
-                          {el}
-                        </Typography>
-                      </th>
-                    )
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {authorsTableData.map(
-                  ({ img, name, email, job, online, date }, key) => {
-                    const className = `py-3 px-5 ${
-                      key === authorsTableData.length - 1
-                        ? ""
-                        : "border-b border-blue-gray-50"
-                    }`;
-
-                    return (
-                      <tr key={name}>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            <Avatar
-                              src={img}
-                              alt={name}
-                              size="sm"
-                              variant="rounded"
-                            />
-                            <div>
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-semibold"
-                              >
-                                {name}
-                              </Typography>
-                              <Typography className="text-xs font-normal text-blue-gray-500">
-                                {email}
-                              </Typography>
-                            </div>
-                          </div>
+            <div className="w-full p-2">
+              <form>
+                <div className="relative">
+                  <AiOutlineSearch className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-600" />
+                  <input
+                    type="search"
+                    placeholder="Search by Firm Name, Brand Name, Person Name, Mobile No"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 py-2 bg-white border border-gray-300 rounded-md shadow-sm"
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      SL. No
+                    </th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Firm Name
+                    </th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Brand
+                    </th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Person Name
+                    </th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Mobile No
+                    </th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {currentItems.length > 0 ? (
+                    currentItems.map((item, index) => (
+                      <tr key={index}>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
+                          {index + 1 + (currentPage - 1) * itemsPerPage}
                         </td>
-                        <td className={className}>
-                          <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {job[0]}
-                          </Typography>
-                          <Typography className="text-xs font-normal text-blue-gray-500">
-                            {job[1]}
-                          </Typography>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                          {item.id_name_of_firm}
                         </td>
-                        <td className={className}>
-                          <Chip
-                            variant="gradient"
-                            color={online ? "green" : "blue-gray"}
-                            value={online ? "online" : "offline"}
-                            className="py-0.5 px-2 text-[11px] font-medium w-fit"
-                          />
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                          {item.id_card_brand_name}
                         </td>
-                        <td className={className}>
-                          <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {date}
-                          </Typography>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                          {item.idcardsub_rep_name}
                         </td>
-                        <td className={className}>
-                          <Typography
-                            as="a"
-                            href="#"
-                            className="text-xs font-semibold text-blue-gray-600"
-                          >
-                            Edit
-                          </Typography>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                          {item.idcardsub_rep_mobile}
+                        </td>
+                        <td className="px-4 py-2 whitespace-nowrap text-sm">
+                          <button className="text-blue-600 hover:text-blue-900">
+                            <FaPrint />
+                          </button>
                         </td>
                       </tr>
-                    );
-                  }
-                )}
-              </tbody>
-            </table>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
-            <Typography variant="h6" color="white">
-              Projects Table
-            </Typography>
-          </CardHeader>
-          <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-            <table className="w-full min-w-[640px] table-auto">
-              <thead>
-                <tr>
-                  {["companies", "members", "budget", "completion", ""].map(
-                    (el) => (
-                      <th
-                        key={el}
-                        className="border-b border-blue-gray-50 py-3 px-5 text-left"
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="6"
+                        className="px-4 py-2 text-center text-gray-500"
                       >
-                        <Typography
-                          variant="small"
-                          className="text-[11px] font-bold uppercase text-blue-gray-400"
-                        >
-                          {el}
-                        </Typography>
-                      </th>
-                    )
+                        No data available
+                      </td>
+                    </tr>
                   )}
-                </tr>
-              </thead>
-              <tbody>
-                {projectsTableData.map(
-                  ({ img, name, members, budget, completion }, key) => {
-                    const className = `py-3 px-5 ${
-                      key === projectsTableData.length - 1
-                        ? ""
-                        : "border-b border-blue-gray-50"
-                    }`;
-
-                    return (
-                      <tr key={name}>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            <Avatar src={img} alt={name} size="sm" />
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-bold"
-                            >
-                              {name}
-                            </Typography>
-                          </div>
-                        </td>
-                        <td className={className}>
-                          {members.map(({ img, name }, key) => (
-                            <Tooltip key={name} content={name}>
-                              <Avatar
-                                src={img}
-                                alt={name}
-                                size="xs"
-                                variant="circular"
-                                className={`cursor-pointer border-2 border-white ${
-                                  key === 0 ? "" : "-ml-2.5"
-                                }`}
-                              />
-                            </Tooltip>
-                          ))}
-                        </td>
-                        <td className={className}>
-                          <Typography
-                            variant="small"
-                            className="text-xs font-medium text-blue-gray-600"
-                          >
-                            {budget}
-                          </Typography>
-                        </td>
-                        <td className={className}>
-                          <div className="w-10/12">
-                            <Typography
-                              variant="small"
-                              className="mb-1 block text-xs font-medium text-blue-gray-600"
-                            >
-                              {completion}%
-                            </Typography>
-                            <Progress
-                              value={completion}
-                              variant="gradient"
-                              color={completion === 100 ? "green" : "gray"}
-                              className="h-1"
-                            />
-                          </div>
-                        </td>
-                        <td className={className}>
-                          <Typography
-                            as="a"
-                            href="#"
-                            className="text-xs font-semibold text-blue-gray-600"
-                          >
-                            <EllipsisVerticalIcon
-                              strokeWidth={2}
-                              className="h-5 w-5 text-inherit"
-                            />
-                          </Typography>
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
+            {/* Pagination */}
+            <div className="flex justify-between mt-4 p-2">
+              <button
+                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="text-sm text-gray-500">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  handlePageChange(Math.min(currentPage + 1, totalPages))
+                }
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
           </CardBody>
         </Card>
       </div>

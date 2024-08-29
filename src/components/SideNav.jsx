@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-import PropTypes from "prop-types";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   HomeIcon,
@@ -8,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { useEffect, useRef } from "react";
-const SideNav = ({ openSideNav, setOpenSideNav, brandName }) => {
+const SideNav = ({ openSideNav, setOpenSideNav }) => {
   const sidenavRef = useRef(null);
   const { pathname } = useLocation();
 
@@ -20,8 +18,6 @@ const SideNav = ({ openSideNav, setOpenSideNav, brandName }) => {
     white: "bg-white shadow-sm",
     transparent: "bg-transparent",
   };
-
-  // const filteredRoutes = routes.filter((route) => route.layout !== "auth");
 
   // close sidebar when clicking outside
 
@@ -51,13 +47,14 @@ const SideNav = ({ openSideNav, setOpenSideNav, brandName }) => {
       } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
       <div className={`relative`}>
-        <Link to="/" className="py-6 px-8 text-center">
-          <Typography
-            variant="h6"
-            color="white" // Hardcoded to "white" for dark sidenav
-          >
-            {brandName}
-          </Typography>
+        <Link to="/" className="flex items-center justify-center p-4">
+          <img
+            src="https://southindiagarmentsassociation.com/assets/images/logo/logo.png"
+            alt="Logo"
+            className={`h-12 w-auto ${
+              sidenavType === "dark" ? "text-white" : "text-black"
+            }`}
+          />
         </Link>
         <IconButton
           variant="text"
@@ -138,18 +135,5 @@ const SideNav = ({ openSideNav, setOpenSideNav, brandName }) => {
       </div>
     </aside>
   );
-};
-
-SideNav.defaultProps = {
-  brandImg: "/img/logo-ct.png",
-  brandName: "Material Tailwind React",
-};
-
-SideNav.propTypes = {
-  brandImg: PropTypes.string,
-  brandName: PropTypes.string,
-  routes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  openSidenav: PropTypes.bool.isRequired,
-  setOpenSidenav: PropTypes.func.isRequired,
 };
 export default SideNav;

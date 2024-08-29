@@ -4,7 +4,7 @@ import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
-import AppProvider from "./context/Context.jsx";
+import AppProvider from "./utils/ContextPanel.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

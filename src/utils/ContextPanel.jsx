@@ -1,14 +1,13 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BASE_URL from "../base/BaseUrl";
 import axios from "axios";
 
-export const Context = createContext();
+export const ContextPanel = createContext();
 
 const AppProvider = ({ children }) => {
   const [isPanelUp, setIsPanelUp] = useState(true);
+
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,7 +16,6 @@ const AppProvider = ({ children }) => {
     try {
       const response = await axios.get(`${BASE_URL}/api/panel-check-status`);
       const datas = await response.data;
-      console.log("data maintence", datas);
       setIsPanelUp(datas);
       if (datas?.success) {
         setError(false);
@@ -64,9 +62,9 @@ const AppProvider = ({ children }) => {
   }, []);
 
   return (
-    <Context.Provider value={{ isPanelUp, setIsPanelUp }}>
+    <ContextPanel.Provider value={{ isPanelUp, setIsPanelUp }}>
       {children}
-    </Context.Provider>
+    </ContextPanel.Provider>
   );
 };
 

@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useLocation, Link } from "react-router-dom";
 import {
   Navbar,
@@ -20,10 +19,32 @@ import {
   CreditCardIcon,
   Bars3Icon,
 } from "@heroicons/react/24/solid";
+import Logout from "./Logout";
+import { useState } from "react";
+import { HiArrowRightStartOnRectangle } from "react-icons/hi2";
 
 const DashboardNavbar = ({ openSideNav, setOpenSideNav }) => {
   const { pathname } = useLocation();
-  const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  // const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const [openModal, setOpenModal] = useState(false); // State to manage the settings dialog
+
+  const handleOpenLogout = () => setOpenModal(!openModal);
+
+  const pathSegments = pathname.split("/").filter((el) => el !== "");
+
+  const breadcrumbs = [
+    { name: "Home", link: "/" },
+    ...pathSegments.map((segment, index) => ({
+      name: segment.charAt(0).toUpperCase() + segment.slice(1),
+      link: `/${pathSegments.slice(0, index + 1).join("/")}`,
+    })),
+  ];
+
+  const pageTitle =
+    pathSegments.length === 0
+      ? "Home"
+      : pathSegments[pathSegments.length - 1]?.charAt(0).toUpperCase() +
+        pathSegments[pathSegments.length - 1]?.slice(1);
 
   // Hardcode fixedNavbar to true
   const fixedNavbar = true;
@@ -46,21 +67,20 @@ const DashboardNavbar = ({ openSideNav, setOpenSideNav }) => {
               fixedNavbar ? "mt-1" : ""
             }`}
           >
-            <Link to={`/${layout}`}>
-              <Typography
-                variant="small"
-                color="white"
-                className="font-normal opacity-50 transition-all hover:text-blue-500 hover:opacity-100"
-              >
-                {layout}
-              </Typography>
-            </Link>
-            <Typography variant="small" color="white" className="font-normal">
-              {page}
-            </Typography>
+            {breadcrumbs.map((breadcrumb, index) => (
+              <Link key={index} to={breadcrumb.link}>
+                <Typography
+                  variant="small"
+                  color="white"
+                  className="font-normal opacity-50 transition-all hover:text-blue-500 hover:opacity-100"
+                >
+                  {breadcrumb.name}
+                </Typography>
+              </Link>
+            ))}
           </Breadcrumbs>
           <Typography variant="h6" color="white">
-            {page}
+            {pageTitle}
           </Typography>
         </div>
         <div className="flex items-center">
@@ -77,7 +97,7 @@ const DashboardNavbar = ({ openSideNav, setOpenSideNav }) => {
           </IconButton>
 
           {/* Sign In button */}
-          <Link to="/login">
+          {/* <Link to="/login">
             <Button
               variant="text"
               color="white"
@@ -93,10 +113,10 @@ const DashboardNavbar = ({ openSideNav, setOpenSideNav }) => {
             >
               <UserCircleIcon className="h-5 w-5 text-white" />
             </IconButton>
-          </Link>
+          </Link> */}
 
           {/* Notification icon and menu */}
-          <Menu>
+          {/* <Menu>
             <MenuHandler>
               <IconButton
                 variant="text"
@@ -177,25 +197,17 @@ const DashboardNavbar = ({ openSideNav, setOpenSideNav }) => {
                 </div>
               </MenuItem>
             </MenuList>
-          </Menu>
+          </Menu> */}
 
           {/* Settings icon */}
-          <IconButton
-            variant="text"
-            color="red"
-            // onClick={() => setOpenConfigurator(dispatch, true)}
-          >
-            <Cog6ToothIcon className="h-5 w-5 text-red" />
+          <IconButton variant="text" color="red" onClick={handleOpenLogout}>
+            <HiArrowRightStartOnRectangle className="h-5 w-5 text-red" />
           </IconButton>
         </div>
       </div>
+      <Logout open={openModal} handleOpen={handleOpenLogout} />
     </Navbar>
   );
-};
-
-DashboardNavbar.propTypes = {
-  openSideNav: PropTypes.bool.isRequired,
-  setOpenSideNav: PropTypes.func.isRequired,
 };
 
 export default DashboardNavbar;
