@@ -85,7 +85,7 @@ const Registration = () => {
     <Layout>
       <div className="mt-12 mb-8 flex flex-col gap-12">
         <Card>
-          <CardHeader variant="gradient" color="white" className="mb-8 p-6">
+          <CardHeader variant="gradient" className=" bg-blue-100 mb-8 p-6">
             <Typography variant="h6" color="black">
               Registration List
             </Typography>
@@ -109,45 +109,45 @@ const Registration = () => {
             </div>
             <div className=" overflow-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+                <thead className="bg-blue-100">
                   <tr>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       SL. No
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Fair Id
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Firm Name
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Person Name
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Mobile No.
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Category Type
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Profession
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       No. of People
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-2 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-gray-200 ">
                   {currentItems.length > 0 ? (
                     currentItems.map((item, index) => (
                       <tr
                         key={item.id}
                         className={`${
                           item.fair_print_status === "Printed"
-                            ? "bg-green-100"
+                            ? "bg-green-50"
                             : ""
                         }`}
                       >

@@ -47,23 +47,23 @@ const SignIn = () => {
 
     setLoading(false);
   };
-
+  //sajid
   return (
-    <section className="flex flex-col lg:flex-row min-h-screen ">
+    <section className="flex flex-col items-center justify-center  lg:flex-row min-h-screen ">
       <div className="flex-1 lg:w-3/5 m-4 lg:m-12  px-4 lg:px-8">
         <div className="text-center">
           <Link to="/" className="flex items-center justify-center p-4">
             <img
               src="https://sigafair.com/fair/images/siga.png"
               alt="Logo"
-              className={`h-12 w-96   `}
+              className={`h-12 w-auto    `}
             />
           </Link>
         </div>
         <form
           onSubmit={handleSumbit}
           method="POST"
-          className="mt-8 mb-2 mx-auto w-full max-w-md lg:w-3/4"
+          className="mt-8 mb-2 mx-auto w-full max-w-md "
         >
           <div className="mb-6 flex flex-col gap-6">
             <Typography
