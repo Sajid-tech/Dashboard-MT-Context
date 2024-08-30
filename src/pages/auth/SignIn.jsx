@@ -112,7 +112,7 @@ const SignIn = () => {
           </Button>
         </form>
       </div>
-      <div className="w-full lg:w-2/5 h-auto lg:h-full hidden md:block lg:block">
+      <div className="w-full lg:w-2/5 h-auto lg:h-full hidden  lg:block">
         <img
           src="/img/pattern.png"
           className="h-full max-h-screen w-full object-cover  rounded-none"
