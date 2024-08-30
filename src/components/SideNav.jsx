@@ -47,7 +47,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
       <div className={`relative`}>
-        <Link to="/" className="flex items-center justify-center p-4">
+        <Link to="/home" className="flex items-center justify-center p-4">
           <img
             src="https://southindiagarmentsassociation.com/assets/images/logo/logo.png"
             alt="Logo"
