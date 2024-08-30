@@ -20,7 +20,7 @@ const DashboardNavbar = ({ openSideNav, setOpenSideNav }) => {
   const pathSegments = pathname.split("/").filter((el) => el !== "");
 
   const breadcrumbs = [
-    { name: "Home", link: "/" },
+    { name: "Home", link: "/home" },
     ...pathSegments.map((segment, index) => ({
       name: segment.charAt(0).toUpperCase() + segment.slice(1),
       link: `/${pathSegments.slice(0, index + 1).join("/")}`,
